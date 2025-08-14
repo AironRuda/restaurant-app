@@ -41,7 +41,7 @@ export class AxiosRepository implements IApiRepository {
     return axiosInstance;
   }
 
-  async Get<T>(endpoint: string, params?: RequestData): Promise<T> {
+  async Get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
     try {
       const response = await this._axios.get<T>(endpoint, { params });
       return response.data;
@@ -50,7 +50,7 @@ export class AxiosRepository implements IApiRepository {
     }
   }
 
-  async Post<T>(endpoint: string, data?: Record<string, any>): Promise<T> {
+  async Post<T>(endpoint: string, data?: RequestData): Promise<T> {
     try {
       const response = await this._axios.post<T>(endpoint, data);
       return response.data;
