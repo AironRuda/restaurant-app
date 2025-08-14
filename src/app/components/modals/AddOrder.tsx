@@ -69,8 +69,8 @@ const AddOrder = ({
     try {
       await createOrder(order);
       setShowModal(false);
-    } catch (error) {
-      console.error("Error al crear el pedido:", error);
+    } catch (_error) {
+      console.error("Error al crear el pedido:", _error);
     }
   }
 

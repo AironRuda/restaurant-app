@@ -26,8 +26,8 @@ const AddProduct = ({
         description,
       });
       setShowModal(false);
-    } catch (error) {
-      console.error("Error al agregar el producto:", error);
+    } catch (_error) {
+      console.error("Error al agregar el producto:", _error);
       setIsError(true);
     }
   }
