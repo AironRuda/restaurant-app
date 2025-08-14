@@ -27,6 +27,7 @@ const AddProduct = ({
       });
       setShowModal(false);
     } catch (error) {
+      console.error("Error al agregar el producto:", error);
       setIsError(true);
     }
   }

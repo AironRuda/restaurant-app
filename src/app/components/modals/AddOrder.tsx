@@ -65,9 +65,13 @@ const AddOrder = ({
 
   const buttonDisabled = order.length === 0;
 
-  function generateOrder() {
-    createOrder(order);
-    setShowModal(false);
+  async function generateOrder() {
+    try {
+      await createOrder(order);
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error al crear el pedido:", error);
+    }
   }
 
   function closeOrder() {

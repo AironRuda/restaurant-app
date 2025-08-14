@@ -27,6 +27,7 @@ const LogInForm = () => {
       loginContext({ email: userEmail, role });
       router.push("/profile");
     } catch (error) {
+      console.error("Error al iniciar sesion:", error);
       setIsError(true);
     }
   }

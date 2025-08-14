@@ -33,6 +33,7 @@ const SignInForm = () => {
       loginContext({ email: userEmail, role: userRole });
       router.push("/profile");
     } catch (error) {
+      console.error("Error al crear el usuario:", error);
       setIsError(true);
     }
   }
