@@ -16,7 +16,7 @@ const AddProduct = ({
 
   const [isError, setIsError] = useState(false);
 
-  const { createProduct, isLoading } = useCreateProduct();
+  const { createProduct } = useCreateProduct();
 
   async function handleSubmit() {
     try {
@@ -28,7 +28,6 @@ const AddProduct = ({
       setShowModal(false);
     } catch (error) {
       setIsError(true);
-      console.log(error);
     }
   }
 

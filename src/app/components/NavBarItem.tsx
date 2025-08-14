@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useUserContext } from "../context/UserProvider";
 
 interface NavBarItemProps {
   item: {
@@ -13,8 +12,6 @@ interface NavBarItemProps {
 }
 
 const NavBarItem = ({ item, pathname }: NavBarItemProps) => {
-  const { user } = useUserContext();
-
   return (
     <li className="flex flex-col items-center" key={item.name}>
       <Link href={item.href}>
