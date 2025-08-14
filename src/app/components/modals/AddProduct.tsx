@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCreateProduct } from "@/features/products/presentation/useProducts";
+import { useEffect, useState } from "react";
 
 const AddProduct = ({
   setShowModal,
@@ -9,12 +10,29 @@ const AddProduct = ({
   const [price, setPrice] = useState<number | null>(null);
   const [description, setDescription] = useState<string>("");
 
-  function handleSubmit() {
-    console.log(name, price, description);
-    setShowModal(false);
+  useEffect(() => {
+    setIsError(false);
+  }, [name, price, description]);
+
+  const [isError, setIsError] = useState(false);
+
+  const { createProduct, isLoading } = useCreateProduct();
+
+  async function handleSubmit() {
+    try {
+      await createProduct({
+        name,
+        price: price!,
+        description,
+      });
+      setShowModal(false);
+    } catch (error) {
+      setIsError(true);
+      console.log(error);
+    }
   }
 
-  const bisableButton = !name || !price || price < 0 || !description;
+  const disableButton = !name || !price || price < 0 || !description;
 
   return (
     <div className="z-20 fixed inset-0 backdrop-blur-sm bg-black/50 flex items-center justify-center rounded-2xl">
@@ -55,12 +73,15 @@ const AddProduct = ({
             />
           </div>
         </form>
+        <p className={isError ? "text-failure visible " : "invisible"}>
+          Error al agregar producto, intente de nuevo
+        </p>
         <div className="flex w-full justify-between gap-2">
           <button
             onClick={handleSubmit}
-            disabled={bisableButton}
+            disabled={disableButton}
             className={`text-white p-2 rounded-2xl w-full cursor-pointer ${
-              bisableButton ? "bg-gray-400" : "bg-primary"
+              disableButton ? "bg-gray-400" : "bg-primary"
             } `}
           >
             Agregar

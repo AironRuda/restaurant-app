@@ -8,7 +8,7 @@ import {
 export class CreateUserUseCase {
   constructor(private readonly authRepository: IAuthRepository) {}
 
-  async execute(credentials: ICreateUserCredentials): Promise<IAuthResponse> {
+  validateUser(credentials: ICreateUserCredentials): void {
     if (!credentials.email || !credentials.password) {
       throw {
         message: "Email y contraseña son requeridos",
@@ -30,7 +30,10 @@ export class CreateUserUseCase {
         statusCode: 400,
       } as AuthError;
     }
+  }
 
+  async execute(credentials: ICreateUserCredentials): Promise<IAuthResponse> {
+    this.validateUser(credentials);
     try {
       return await this.authRepository.createUser(credentials);
     } catch (error) {

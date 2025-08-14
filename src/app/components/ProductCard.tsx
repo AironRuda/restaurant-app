@@ -1,13 +1,8 @@
 import Image from "next/image";
 import React from "react";
+import { IProductData } from "../../features/products/domain/types";
 
-interface Product {
-  name: string;
-  price: number;
-  description: string;
-}
-
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: IProductData }) => {
   return (
     <article className="h-64 p-2 flex flex-col items-center justify-center border-2 border-primary-bg bg-primary-bg rounded-2xl">
       <div className="border-2 border-primary bg-white rounded-full p-2">
