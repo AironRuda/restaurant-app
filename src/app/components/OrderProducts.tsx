@@ -1,27 +1,17 @@
+import { IOrderItem } from "@/features/orders/doamin/types";
 import React from "react";
 
-const productsItems = [
-  {
-    productId: 1,
-    quantity: 2,
-    price: 10,
-    name: "Producto 1",
-  },
-  {
-    productId: 6,
-    quantity: 1,
-    price: 20,
-    name: "Producto 2",
-  },
-  {
-    productId: 16,
-    quantity: 1,
-    price: 30,
-    name: "Producto 3",
-  },
-];
+interface OrderProductsProps {
+  productsItems: IOrderItem[];
+  handleIncreaseQuantity: (product: IOrderItem) => void;
+  handleDecreaseQuantity: (product: IOrderItem) => void;
+}
 
-const OrderProducts = () => {
+const OrderProducts = ({
+  productsItems,
+  handleIncreaseQuantity,
+  handleDecreaseQuantity,
+}: OrderProductsProps) => {
   return (
     <div className="flex flex-col gap-2">
       {productsItems.map((product, index) => (
@@ -33,14 +23,14 @@ const OrderProducts = () => {
           <p>${product.price}</p>
           <div className="flex items-center gap-2 h-8">
             <button
-              onClick={() => product.quantity--}
+              onClick={() => handleDecreaseQuantity(product)}
               className="flex items-center justify-center bg-tertiary text-white p-2 h-8 w-8 rounded-md cursor-pointer hover:scale-102 transition-all"
             >
               -
             </button>
             <p>{product.quantity}</p>
             <button
-              onClick={() => product.quantity++}
+              onClick={() => handleIncreaseQuantity(product)}
               className="flex items-center justify-center bg-tertiary text-white p-2 h-8 w-8 rounded-md cursor-pointer hover:scale-102 transition-all"
             >
               +

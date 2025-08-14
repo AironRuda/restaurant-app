@@ -2,22 +2,9 @@
 import { useState } from "react";
 import { formatTimeAMPM } from "../utils/formatters";
 import AddOrder from "./modals/AddOrder";
+import { IOrder } from "@/features/orders/doamin/types";
 
-interface Order {
-  id: number;
-  items: OrderItem[];
-  total: number;
-  date: string;
-}
-
-interface OrderItem {
-  productId: number;
-  quantity: number;
-  price: number;
-  name: string;
-}
-
-const OrderCard = ({ order, index }: { order: Order; index: number }) => {
+const OrderCard = ({ order, index }: { order: IOrder; index: number }) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <article className="h-44 p-2 flex flex-col items-center justify-center border-2 border-primary-bg bg-primary-bg rounded-2xl">
@@ -25,7 +12,7 @@ const OrderCard = ({ order, index }: { order: Order; index: number }) => {
         {index}
       </span>
       <p className="text-lg font-semibold text-center">
-        {formatTimeAMPM(order.date)}
+        {formatTimeAMPM(order.createdAt)}
       </p>
       <p className="text-sm text-center text-gray-800">
         Precio total: ${order.total}

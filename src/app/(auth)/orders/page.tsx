@@ -1,13 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { ordersList } from "../../utils/orderList";
 import OrderCard from "../../components/OrderCard";
 import { getReverseIndex, sortOrdersByDate } from "../../utils/orderUtils";
 import AddOrder from "../../components/modals/AddOrder";
 import Image from "next/image";
+import { useGetOrders } from "@/features/orders/presentation/useOrders";
 
 const page = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const { ordersList } = useGetOrders();
+  if (!ordersList) return null;
   const sortedOrders = sortOrdersByDate(ordersList);
 
   return (

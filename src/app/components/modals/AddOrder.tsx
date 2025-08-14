@@ -1,41 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import AllProductsForAnOrder from "../AllProductsForAnOrder";
 import OrderProducts from "../OrderProducts";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-}
-
-const order = {
-  id: Date.now(),
-  items: [],
-  total: 0,
-  date: new Date().toISOString(),
-};
+import { IProductData } from "@/features/products/domain/types";
+import { IOrderItem } from "@/features/orders/doamin/types";
+import { calculateOrderTotalPrice } from "@/app/utils/orderUtils";
+import { useCreateOrder } from "@/features/orders/presentation/useOrders";
 
 const AddOrder = ({
   setShowModal,
 }: {
   setShowModal: (show: boolean) => void;
 }) => {
-  function handleAddProduct(product: Product) {
-    console.log("add product", product);
+  const [order, setOrder] = useState<IOrderItem[]>([]);
+
+  const { createOrder } = useCreateOrder();
+
+  function handleAddProduct(product: IProductData) {
+    const productInOrder = order.find(
+      (item) => item.productId === Number(product.id)
+    );
+
+    if (productInOrder) {
+      handleIncreaseQuantity(productInOrder);
+      return;
+    }
+    const orderItem: IOrderItem = {
+      productId: Number(product.id),
+      quantity: 1,
+      price: Number(product.price),
+      name: product.name,
+    };
+    setOrder((prevOrder) => [...prevOrder, orderItem]);
   }
 
-  const buttonDisabled = order.items.length === 0;
+  function handleIncreaseQuantity(product: IOrderItem) {
+    setOrder((prevOrder) =>
+      prevOrder.map((item) =>
+        item.productId === product.productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  }
+
+  function handleDecreaseQuantity(product: IOrderItem) {
+    if (product.quantity <= 1) {
+      handleRemoveProduct(product);
+      return;
+    }
+    setOrder((prevOrder) =>
+      prevOrder.map((item) =>
+        item.productId === product.productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  }
+
+  function handleRemoveProduct(product: IOrderItem) {
+    setOrder((prevOrder) =>
+      prevOrder.filter((item) => item.productId !== product.productId)
+    );
+  }
+
+  const buttonDisabled = order.length === 0;
 
   function generateOrder() {
-    console.log("generate order");
-
-    console.log(order);
+    createOrder(order);
     setShowModal(false);
   }
 
   function closeOrder() {
-    console.log("close order");
     setShowModal(false);
   }
 
@@ -45,18 +80,23 @@ const AddOrder = ({
         <h2 className="text-2xl font-bold">Nuevo pedido</h2>
         <div className=" grid grid-cols-2 items-center h-full w-full gap-5">
           <div className="w-full h-[75dvh] overflow-y-auto">
-            <AllProductsForAnOrder onAddProduct={handleAddProduct} />
+            <AllProductsForAnOrder addProduct={handleAddProduct} />
           </div>
           <div className="flex flex-col items-center w-full h-[75dvh] p-5 pt-0">
             <div className="flex-1 overflow-y-auto w-full">
               <p className="text-xl font-bold text-center">
                 Lista de productos en la orden
               </p>
-              <OrderProducts />
+              <OrderProducts
+                productsItems={order}
+                handleIncreaseQuantity={handleIncreaseQuantity}
+                handleDecreaseQuantity={handleDecreaseQuantity}
+              />
             </div>
             <div className="flex flex-col w-full items-center gap-2 border-t-2 border-black/20 pt-5">
               <p>
-                <span className="font-semibold mr-2">Total:</span>${order.total}
+                <span className="font-semibold mr-2">Total:</span>$
+                {calculateOrderTotalPrice(order)}
               </p>
               <div className="flex items-center justify-center gap-2 w-full">
                 <button
