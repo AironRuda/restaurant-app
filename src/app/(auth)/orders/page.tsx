@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useGetOrders } from "@/features/orders/presentation/useOrders";
 import { useUserContext } from "@/app/context/UserProvider";
 
-const page = () => {
+const Orders = () => {
   const [showModal, setShowModal] = useState(false);
   const { ordersList } = useGetOrders();
   const { user } = useUserContext();
@@ -43,4 +43,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Orders;

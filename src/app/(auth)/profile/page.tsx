@@ -1,7 +1,7 @@
 import React from "react";
 import UserInfoCard from "../../components/UserInfoCard";
 
-const page = () => {
+const Profile = () => {
   return (
     <div className="flex flex-col items-center justify-center m-5 p-5  rounded-2xl">
       <UserInfoCard />
@@ -9,4 +9,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Profile;
