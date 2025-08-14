@@ -1,27 +1,60 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCreateUser } from "@/features/auth/presentation/hooks/useAuth";
+import { useUserContext } from "../context/UserProvider";
 
 const SignInForm = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [roll, setRoll] = useState("");
+  const [role, setRole] = useState("");
 
+  const [isError, setIsError] = useState(false);
+
+  const { login: loginContext } = useUserContext();
+
+  const { createUser, isLoading } = useCreateUser();
   const router = useRouter();
 
-  function signIn(e: React.FormEvent) {
+  useEffect(() => {
+    setIsError(false);
+  }, [name, email, password, role]);
+
+  async function signIn(e: React.FormEvent) {
     e.preventDefault();
-    console.log(email, password, roll);
-    router.push("/profile");
+    try {
+      const { email: userEmail, role: userRole } = await createUser({
+        name,
+        email,
+        role,
+        password,
+      });
+      loginContext({ email: userEmail, role: userRole });
+      router.push("/profile");
+    } catch (error) {
+      setIsError(true);
+    }
   }
 
-  const disabledButton = !email || !password || !roll;
+  const disabledButton = !name || !email || !password || !role;
 
   return (
     <form
       onSubmit={signIn}
       className="flex flex-col w-3/4 border-2 border-primary rounded-2xl bg-white p-5 gap-5"
     >
+      <div className="flex flex-col gap-1">
+        <label htmlFor="name">Nombre</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Ingrese su nombre"
+          className="border-2 border-primary rounded-lg p-2"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
       <div className="flex flex-col gap-1">
         <label htmlFor="email">Correo</label>
         <input
@@ -38,8 +71,8 @@ const SignInForm = () => {
         <select
           id="role"
           className="border-2 border-primary rounded-lg p-2 h-10"
-          value={roll}
-          onChange={(e) => setRoll(e.target.value)}
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
         >
           <option value="">Seleccione un rol</option>
           <option value="admin">Administrador</option>
@@ -57,6 +90,9 @@ const SignInForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+      <p className={isError ? "text-failure visible" : "invisible"}>
+        Error al crear el usuario, intente de nuevo
+      </p>
       <button
         type="submit"
         className={`bg-primary text-white p-2 rounded-lg cursor-pointer ${
@@ -64,7 +100,7 @@ const SignInForm = () => {
         }`}
         disabled={disabledButton}
       >
-        Registrarse
+        {isLoading ? "Cargando..." : "Registrarse"}
       </button>
     </form>
   );
