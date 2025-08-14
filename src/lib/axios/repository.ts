@@ -48,7 +48,7 @@ export class AxiosRepository implements IApiRepository {
     }
   }
 
-  async Post<T>(endpoint: string, data?: Record<string, any>): Promise<T> {
+  async Post<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     try {
       const response = await this._axios.post<T>(endpoint, data);
       return response.data;
