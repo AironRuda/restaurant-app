@@ -78,7 +78,7 @@ src/
 1. Clonar el repositorio:
 
    ```bash
-   git clone [https://github.com/your-username/restaurant-app.git](https://github.com/your-username/restaurant-app.git)
+   git clone [https://github.com/AironRuda/restaurant-app.git](https://github.com/AironRuda/restaurant-app.git)
    cd restaurant-app
 
    ```
