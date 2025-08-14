@@ -26,7 +26,7 @@ const navItems = [
 const NavBar = () => {
   const pathname = usePathname();
   return (
-    <nav className="h-22 m-0 block items-center justify-between shadow-md bg-white">
+    <nav className="h-22 m-0 block items-center justify-between shadow-md bg-primary-bg">
       <ul className="flex items-center justify-around h-full">
         {navItems.map((item) => (
           <NavBarItem key={item.name} item={item} pathname={pathname} />
