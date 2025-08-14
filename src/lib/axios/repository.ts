@@ -7,8 +7,6 @@ import {
 import axios from "axios";
 import { IApiRepository } from "./types";
 
-import type { RequestData } from "./types";
-
 export class AxiosRepository implements IApiRepository {
   private _axios: AxiosInstance;
 
@@ -50,7 +48,7 @@ export class AxiosRepository implements IApiRepository {
     }
   }
 
-  async Post<T>(endpoint: string, data?: RequestData): Promise<T> {
+  async Post<T>(endpoint: string, data?: Record<string, any>): Promise<T> {
     try {
       const response = await this._axios.post<T>(endpoint, data);
       return response.data;
