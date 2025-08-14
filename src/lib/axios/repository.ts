@@ -48,6 +48,7 @@ export class AxiosRepository implements IApiRepository {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async Post<T>(endpoint: string, data?: Record<string, any>): Promise<T> {
     try {
       const response = await this._axios.post<T>(endpoint, data);
