@@ -23,7 +23,6 @@ Una aplicación moderna de gestión de restaurantes desarrollada con Next.js, Ty
 - **Diseño Responsive**
 
   - Interfaz intuitiva con TailwindCSS
-  - Soporte para modo oscuro
 
 ## 🛠️ Tecnologías Utilizadas
 
