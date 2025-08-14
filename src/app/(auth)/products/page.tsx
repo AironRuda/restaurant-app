@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useUserContext } from "../../context/UserProvider";
 import { useGetProducts } from "@/features/products/presentation/useProducts";
 
-const Page = () => {
+const page = () => {
   const { productsList } = useGetProducts();
   const [showModal, setShowModal] = useState(false);
   const { user } = useUserContext();
@@ -34,4 +34,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default page;
