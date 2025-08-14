@@ -2,15 +2,15 @@
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/app/context/UserProvider";
 
-const UserInfoCard = ({
-  userData,
-}: {
-  userData: { email: string; roll: string };
-}) => {
+const UserInfoCard = () => {
   const router = useRouter();
+
+  const { user, logout: logoutContext } = useUserContext();
+
   function logout() {
-    console.log("logout");
+    logoutContext();
     router.push("/");
   }
   return (
@@ -19,13 +19,13 @@ const UserInfoCard = ({
         <h1>
           <strong>Usuario</strong>
         </h1>
-        <p className="text-2xl">{userData.email}</p>
+        <p className="text-2xl">{user?.email}</p>
       </div>
       <div className="flex flex-col items-center gap-2">
         <div className="rounded-full border-2 border-primary bg-white p-2">
           <Image
             src={
-              userData.roll === "admin" ? "/admin-icon.svg" : "/waiter-icon.svg"
+              user?.role === "admin" ? "/admin-icon.svg" : "/waiter-icon.svg"
             }
             alt="user-icon"
             width={100}
@@ -33,7 +33,7 @@ const UserInfoCard = ({
           />
         </div>
         <p className="text-xl font-bold">
-          {userData.roll === "admin" ? "Administrador" : "Mesero"}
+          {user?.role === "admin" ? "Administrador" : "Mesero"}
         </p>
       </div>
       <button

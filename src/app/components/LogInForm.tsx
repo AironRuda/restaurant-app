@@ -1,17 +1,34 @@
 "use client";
+import { useLogin } from "@/features/auth/presentation/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserContext } from "@/app/context/UserProvider";
 
 const LogInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isError, setIsError] = useState(false);
+
+  const { login, isLoading } = useLogin();
+
+  const { login: loginContext } = useUserContext();
+
+  useEffect(() => {
+    setIsError(false);
+  }, [email, password]);
+
   const router = useRouter();
 
-  function logIn(e: React.FormEvent) {
+  async function logIn(e: React.FormEvent) {
     e.preventDefault();
-    console.log(email, password);
-    router.push("/profile");
+    try {
+      const { email: userEmail, role } = await login({ email, password });
+      loginContext({ email: userEmail, role });
+      router.push("/profile");
+    } catch (error) {
+      setIsError(true);
+    }
   }
 
   const disabledButton = !email || !password;
@@ -43,14 +60,18 @@ const LogInForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+
+      <p className={isError ? "text-failure visible" : "invisible"}>
+        Error al iniciar sesion, intente de nuevo
+      </p>
+
       <button
         type="submit"
-        className={`bg-primary text-white p-2 rounded-lg cursor-pointer ${
-          disabledButton ? "cursor-not-allowed opacity-50" : ""
-        }`}
+        className={`bg-primary text-white p-2 rounded-lg cursor-pointer 
+          ${disabledButton ? "cursor-not-allowed opacity-50" : ""}`}
         disabled={disabledButton}
       >
-        Iniciar sesion
+        {isLoading ? "Cargando..." : "Iniciar sesion"}
       </button>
     </form>
   );

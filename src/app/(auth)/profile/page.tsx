@@ -4,9 +4,7 @@ import UserInfoCard from "../../components/UserInfoCard";
 const page = () => {
   return (
     <div className="flex flex-col items-center justify-center m-5 p-5  rounded-2xl">
-      <UserInfoCard
-        userData={{ email: "aironrudaa@gmail.com", roll: "admin" }}
-      />
+      <UserInfoCard />
     </div>
   );
 };
